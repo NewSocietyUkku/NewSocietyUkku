@@ -3,21 +3,165 @@
 <br>
 <br>
 
+
+
+
+
+<!-- ==== 1. PLACE FOR THE TWO TOCs (put near the top of <body>) ==== -->
+
+
+<div id="toc-para-container" style="margin-bottom:2rem;">
+  <h2 style="margin-bottom:0.5rem;">Table of Contents (Major Headings)</h2>
+  <div id="toc-para"></div>
+</div>
+
+
+
+
 <br>
 <br>
 
 
-<!--
+<br>
+<br>
 
 
-<p style="font-size: 27px;">
 
-<h1>The creation of a new society</h1></p>
+<div id="toc-main-container" style="margin-bottom:2rem;">
+  <h2 style="margin-bottom:0.5rem;">Table of Contents (Minor Headings)</h2>
+  <div id="toc-main"></div>
+</div>
 
 
--->
-A definition list is also present at the top of the document, just belowthis section, explaining how to use this document. The purpose of this
-list is not to give definitions but to give an explanation of any usefu
+<script>
+  // ------------------------------------------------------------
+  // CONFIGURATION
+  // ------------------------------------------------------------
+  const SECTION_HEADING_SELECTOR = `
+    section > strong, section > b,
+    article > strong, article > b,
+    div > strong, div > b,
+    main > strong, main > b,
+    body > strong, body > b
+  `.replace(/\s+/g, '');
+
+  const PARA_BOLD_SELECTOR = 'p strong, p b';   // <p><b>…</b></p>
+
+  // ------------------------------------------------------------
+  // HELPERS
+  // ------------------------------------------------------------
+  function makeId(text, idx) {
+    const base = text.toLowerCase()
+      .replace(/[^\w]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+    let id = base || `item-${idx}`;
+    let counter = 1;
+    while (document.getElementById(id)) {
+      id = `${base}-${counter++}`;
+    }
+    return id;
+  }
+
+  function buildTOC(containerId, selector, titlePrefix = '') {
+    const container = document.getElementById(containerId);
+    const elements = document.querySelectorAll(selector);
+    if (!elements.length) {
+      container.innerHTML = '<em>No items found.</em>';
+      return;
+    }
+
+    const ol = document.createElement('ol');
+    ol.style.paddingLeft = '1.5rem';
+
+    elements.forEach((el, idx) => {
+      const text = el.textContent.trim();
+      if (!text) return;
+
+      // ---- Wrap in container (only once) ----
+      const parent = el.parentNode;
+      if (!parent.classList.contains('toc-container')) {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'toc-container';
+        parent.insertBefore(wrapper, el);
+        wrapper.appendChild(el);
+      }
+
+      // ---- Assign ID ----
+      let id = el.id;
+      if (!id) {
+        id = makeId(text, idx);
+        el.id = id;
+      }
+
+      // ---- List item ----
+      const li = document.createElement('li');
+      li.style.margin = '0.2rem 0';
+
+      const a = document.createElement('a');
+      a.href = `#${id}`;
+      a.textContent = (titlePrefix ? `${titlePrefix} ` : '') + text;
+      a.style.textDecoration = 'none';
+      a.style.color = '#1a0dab';
+      a.onmouseover = () => a.style.textDecoration = 'underline';
+      a.onmouseout  = () => a.style.textDecoration = 'none';
+
+      li.appendChild(a);
+      ol.appendChild(li);
+    });
+
+    container.appendChild(ol);
+  }
+
+  // ------------------------------------------------------------
+  // RUN AFTER PAGE LOAD
+  // ------------------------------------------------------------
+  function initTOCs() {
+    buildTOC('toc-main', SECTION_HEADING_SELECTOR);
+    buildTOC('toc-para', PARA_BOLD_SELECTOR, '!');
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initTOCs);
+  } else {
+    initTOCs();
+  }
+</script>
+
+<!-- Optional: Style the containers -->
+<style>
+  .toc-container {
+    margin: 1.5rem 0;
+    padding: 0.5rem 0 0.5rem 0.8rem;
+    border-left: 4px solid #007bff;
+    background-color: #f8f9fa;
+    border-radius: 0 4px 4px 0;
+  }
+</style>
+
+
+
+
+
+
+
+
+<br>
+<br>
+
+
+
+
+
+
+
+
+
+
+<h1><p style="font-size: 27px;">The creation of a new society</p></h1>
+
+
+A definition list is also present at the top of the document, just below this section, explaining how to use this document. The purpose of this
+list is not to give definitions but to give an explanation of any useful
 terms, that may not otherwise be clearly understood when jumping ahead.
 
 <br>
@@ -8519,7 +8663,7 @@ not)
 
 <p style="font-size: 27px;">
 
-<b>Tax<
+<b>Tax
 
 </p>
 </b>
@@ -12594,7 +12738,7 @@ re-occurring is likely. This is true even for times where it may appear unlikely
 <br>
 
 
-<b>>   [revolutionary training]</b>
+<b>   [revolutionary training]</b>
 
 <br>
 <br>
