@@ -25,7 +25,11 @@
 <br>
 <br>
 
-
+<!-- Place this at the top, where your table of contents lives -->
+<nav id="table-of-contents">
+  <!-- your TOC markup -->
+  <!-- ... -->
+</nav>	
 
 <div id="toc-main-container" style="margin-bottom:2rem;">
   <h2 style="margin-bottom:0.5rem;">Table of Contents (Minor Headings)</h2>
@@ -602,8 +606,8 @@ as to be used for a specif use only.
 <br>
 
 
-This is the tax people receive for owning land. Everyone who owns lands
-receives this tax.
+This is the tax people pay for owning land. Everyone who owns land
+pays this tax.
 
 <br>
 <br>
@@ -12892,3 +12896,154 @@ Then after that [Ukku day], all those who [initiate a revolution], will have acc
 The last thing that citizens are reminded of at the end of their [revolutionary training] is that, violence is not an ends to a means. Rather, it is a last resort for when all else fails. They are reminded that it should be avoided at all costs.
 <br>
 <br>
+
+
+
+<!-- Return to TOC button -->
+<style>
+  #return-toc-btn {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    z-index: 9999;
+    background: #0b7dda;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 15px 20px;
+
+<!-- Bookworm -->
+
+
+
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: transform .12s ease, opacity .12s ease;
+  }
+  #return-toc-btn:hover { transform: translateY(-2px); }
+  #return-toc-btn:active { transform: translateY(0); }
+  @media (prefers-reduced-motion: reduce){ #return-toc-btn { transition: none; } }
+</style>
+
+<button id="return-toc-btn" aria-label="Return to table of contents">table2</button>
+
+<script>
+  (function(){
+    const btn = document.getElementById('return-toc-btn');
+    function scrollToTOC(){
+      const target = document.getElementById('table-of-contents') || document.documentElement;
+      if ('scrollBehavior' in document.documentElement.style) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        // fallback
+        window.scrollTo(0, 0);
+      }
+    }
+    btn.addEventListener('click', scrollToTOC);
+
+    // Optional: hide button when already near top
+    function toggleVisibility(){
+      const threshold = 200;
+      if (window.scrollY > threshold) btn.style.opacity = '1';
+      else btn.style.opacity = '0.35';
+    }
+    toggleVisibility();
+    window.addEventListener('scroll', toggleVisibility, { passive: true });
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Back to Top Button</title>
+  <style>
+    /* Button style */
+    #backToTop {
+      position: fixed;
+      right: 10px;
+      bottom: 10px;
+      padding: 30px 15px;
+      background: #013898d4;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 22px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+
+    #backToTop:focus {
+      outline: 3px solid #005a9e;
+      outline-offset: 2px;
+    }
+
+    /* Optional: hide until user scrolls down 200px */
+    #backToTop.hidden {
+      display: none;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
+</head>
+<body>
+
+  <main>
+    <h1>Demo page</h1>
+    <p>Lots of content here…</p>
+    <!-- Repeat to create scrollable content -->
+    <div style="height:2500px; background:linear-gradient(#fff,#eee)"></div>
+  </main>
+
+  <button id="backToTop" class="hidden" aria-label="Scroll to top">
+    table1
+    <br>
+    .
+  </button>
+
+  <script>
+    const btn = document.getElementById('backToTop');
+
+    // Show button only after scrolling down a bit
+    window.addEventListener('scroll', () => {
+      btn.classList.toggle('hidden', window.scrollY < 200);
+    });
+
+    // Scroll to top when clicked
+    btn.addEventListener('click', () => {
+      // Modern smooth scroll
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      // Fallback for very old browsers (uncomment if needed)
+      // window.scrollTo(0, 0);
+    });
+
+    // Allow Enter/Space to activate if focused (button already supports this by default)
+  </script>
+</body>
+</html>
